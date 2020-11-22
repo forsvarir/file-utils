@@ -4,19 +4,25 @@ File services, implemented with spring to support indexing and analysis of files
 
 ## Rest Services
 
-###Operations
+###Operations file-utils/files
 ####Get
-/file-utils/files/{path}
+/file-utils/files/{id}
 
-Returns list of files at given path
+Returns FileDetails with given id
+
 ####Post
 /file-utils/files
 
 Adds a file object if it doesn't already exist
 
-###Data
+### Operations file-utils/directory
+####Get
+/file-utils/directory/{path}
 
-File
+Returns list of file details with matching path
+
+###Data
+FileDetails
 * Id
 * Name
 * Path
