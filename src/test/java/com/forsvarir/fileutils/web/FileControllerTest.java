@@ -38,21 +38,13 @@ class FileControllerTest {
 
     @Test
     @DisplayName("GET /file-utils/files/1 - Found")
-    void getFiles() throws Exception {
+    void getNormalFileIsFound() throws Exception {
         var expectedFileDetails = new FileDetail("/oh/", "SomeFile", 1);
         when(fileService.findById(any())).thenReturn(expectedFileDetails);
 
         // Execute the GET request
         var response = mockMvc.perform(get("/file-utils/files/{id}", "1"))
-
-                // Validate the response code and content type
                 .andExpect(status().isOk())
-
-                // Validate the headers
-                .andExpect(header().string(HttpHeaders.ETAG, "\"1\""))
-                .andExpect(header().string(HttpHeaders.LOCATION, "/file-utils/files/oh/SomeFile"))
-
-                // Validate the returned fields
                 .andExpect(jsonPath("$.name", is("SomeFile")));
     }
 }

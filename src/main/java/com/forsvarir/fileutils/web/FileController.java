@@ -26,13 +26,7 @@ public class FileController {
     @GetMapping("/file-utils/files/{id}")
     public ResponseEntity<?> getFiles(@PathVariable Integer id) {
         var stubbedFile = fileService.findById(id);
-        try {
-            return ResponseEntity.ok()
-                    .eTag(Integer.toString(stubbedFile.getId()))
-                    .location(new URI("/file-utils/files" + stubbedFile.getPath() + stubbedFile.getName()))
-                    .body(stubbedFile);
-        } catch (URISyntaxException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        return ResponseEntity.ok()
+                .body(stubbedFile);
     }
 }
