@@ -33,18 +33,18 @@ public class FileDetail {
         this.size = size;
     }
 
-    public FileDetail(String path, String name) {
+    public FileDetail(String path, String name, Integer id) {
         this.name = name;
         this.path = path;
-        this.id = 1;
+        this.id = id;
         this.size = 400L;
     }
 
     public FileDetail() {
-        name = "unknown";
-        path = "/unk/";
-        this.id = 1;
-        this.size = 400L;
+        this.name = "";
+        this.path = "";
+        this.id = 0;
+        this.size = 0L;
     }
 
     private Integer id;

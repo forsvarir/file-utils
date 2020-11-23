@@ -1,5 +1,7 @@
 package com.forsvarir.fileutils.web;
 
+import com.forsvarir.fileutils.model.FileDetail;
+import com.forsvarir.fileutils.services.FileService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,7 @@ import java.util.Optional;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -24,17 +26,22 @@ class FileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+    private FileService fileService;
 
     @BeforeEach
     void beforeEach() {
+        fileService = mock(FileService.class);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new FileController())
+                .standaloneSetup(new FileController(fileService))
                 .build();
     }
 
     @Test
     @DisplayName("GET /file-utils/files/1 - Found")
     void getFiles() throws Exception {
+        var expectedFileDetails = new FileDetail("/oh/", "SomeFile", 1);
+        when(fileService.findById(any())).thenReturn(expectedFileDetails);
+
         // Execute the GET request
         var response = mockMvc.perform(get("/file-utils/files/{id}", "1"))
 
