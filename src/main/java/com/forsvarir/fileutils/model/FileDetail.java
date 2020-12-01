@@ -33,18 +33,19 @@ public class FileDetail {
         this.size = size;
     }
 
-    public FileDetail(String path, String name, Integer id) {
+    public FileDetail() {
+        this("", "", 0L);
+    }
+
+    public FileDetail(String path, String name, Long size) {
+        this(path, name, size, 0);
+    }
+
+    public FileDetail(String path, String name, Long size, Integer id) {
         this.name = name;
         this.path = path;
         this.id = id;
-        this.size = 400L;
-    }
-
-    public FileDetail() {
-        this.name = "";
-        this.path = "";
-        this.id = 0;
-        this.size = 0L;
+        this.size = size;
     }
 
     private Integer id;

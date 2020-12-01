@@ -4,9 +4,7 @@ import com.forsvarir.fileutils.model.FileDetail;
 import com.forsvarir.fileutils.services.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -28,5 +26,17 @@ public class FileController {
         var stubbedFile = fileService.findById(id);
         return ResponseEntity.ok()
                 .body(stubbedFile);
+    }
+
+    @PostMapping("/file-utils/files")
+    public ResponseEntity<?> addFile(@RequestBody FileDetail newFile)     {
+        var savedFile = fileService.save(newFile);
+        try {
+            return ResponseEntity.created(new URI("/file-utils/files/"+ savedFile.getId()))
+                    .body(savedFile);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
