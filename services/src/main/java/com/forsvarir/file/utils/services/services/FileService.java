@@ -1,6 +1,6 @@
-package com.forsvarir.fileutils.services;
+package com.forsvarir.file.utils.services.services;
 
-import com.forsvarir.fileutils.model.FileDetail;
+import com.forsvarir.file.utils.services.model.FileDetail;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -1,4 +1,4 @@
-package com.forsvarir.fileutils.model;
+package com.forsvarir.file.utils.services.model;
 
 public class FileDetail {
     public Integer getId() {

@@ -1,16 +1,21 @@
-package com.forsvarir.fileutils.web;
+package com.forsvarir.file.utils.services.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.forsvarir.fileutils.model.FileDetail;
-import com.forsvarir.fileutils.services.FileService;
+import com.forsvarir.file.utils.services.model.FileDetail;
+import com.forsvarir.file.utils.services.services.FileService;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +34,7 @@ class FileControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        fileService = mock(FileService.class);
+        fileService = Mockito.mock(FileService.class);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new FileController(fileService))
                 .build();
@@ -39,33 +44,33 @@ class FileControllerTest {
     @DisplayName("GET /file-utils/files/1 - Found")
     void getNormalFileIsFound() throws Exception {
         var expectedFileDetails = new FileDetail("/oh/", "SomeFile", 5000L, 1);
-        when(fileService.findById(any())).thenReturn(expectedFileDetails);
+        Mockito.when(fileService.findById(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
-        var response = mockMvc.perform(get("/file-utils/files/{id}", "1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name", is("SomeFile")))
-                .andExpect(jsonPath("$.size", is(5000)));
+        var response = mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("SomeFile")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5000)));
     }
 
     @Test
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
         var expectedFileDetails = new FileDetail("/savedPath/", "SavedFile", 999L, 55);
-        when(fileService.save(any())).thenReturn(expectedFileDetails);
+        Mockito.when(fileService.save(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
 
-        mockMvc.perform(post("/file-utils/files")
+        mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postedFileDetails)))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 // Validate the headers
-                .andExpect(header().string(HttpHeaders.LOCATION, "/file-utils/files/55"))
+                .andExpect(MockMvcResultMatchers.header().string(HttpHeaders.LOCATION, "/file-utils/files/55"))
                 // Validate the returned fields
-                .andExpect(jsonPath("$.id", is(55)))
-                .andExpect(jsonPath("$.name", is("SavedFile")))
-                .andExpect(jsonPath("$.size", is(999)));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id", Matchers.is(55)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("SavedFile")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(999)));
     }
 
     @Test
@@ -73,9 +78,9 @@ class FileControllerTest {
     void postNormalFileIsSavedCorrectly() throws Exception {
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails);
+        Mockito.when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails);
 
-        mockMvc.perform(post("/file-utils/files")
+        mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postedFileDetails)));
 

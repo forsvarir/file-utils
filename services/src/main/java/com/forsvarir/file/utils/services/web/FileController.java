@@ -1,16 +1,13 @@
-package com.forsvarir.fileutils.web;
+package com.forsvarir.file.utils.services.web;
 
-import com.forsvarir.fileutils.model.FileDetail;
-import com.forsvarir.fileutils.services.FileService;
+import com.forsvarir.file.utils.services.model.FileDetail;
+import com.forsvarir.file.utils.services.services.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @RestController
 public class FileController {
