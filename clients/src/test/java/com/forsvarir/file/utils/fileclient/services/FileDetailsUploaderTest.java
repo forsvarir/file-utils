@@ -33,9 +33,4 @@ class FileDetailsUploaderTest {
 
         verify(fileWalker).apply(Path.of("someFolder"));
     }
-
-    Stream<Path> fileSupplier(Path somePath) {
-        return Stream.empty();
-    }
-
 }
