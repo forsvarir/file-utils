@@ -4,11 +4,23 @@ import com.forsvarir.common.utils.file.FileWalker;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.Path;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 @Service
 public class FileDetailsUploader {
+    Function<Path, Stream<Path>> fileWalker;
+
+    FileDetailsUploader() {
+        this( FileWalker::walk);
+    }
+
+    FileDetailsUploader(Function<Path, Stream<Path>> fileWalker) {
+        this.fileWalker = fileWalker;
+    }
+
     public void processFolder(String pathToProcess) {
-        FileWalker.walk(Path.of("/tmp"))
+        fileWalker.apply(Path.of(pathToProcess))
                 .forEach(f -> System.out.println(f.toString()));
     }
 }
