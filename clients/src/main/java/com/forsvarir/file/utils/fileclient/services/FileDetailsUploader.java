@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 public class FileDetailsUploader {
     Function<Path, Stream<Path>> fileWalker;
 
+    @SuppressWarnings("unused")
     FileDetailsUploader() {
         this( FileWalker::walk);
     }
