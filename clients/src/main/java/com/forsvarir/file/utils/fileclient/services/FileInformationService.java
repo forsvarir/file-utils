@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.fileclient.services.data.FileDetails;
+import com.forsvarir.file.utils.common.api.data.FileDetails;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;

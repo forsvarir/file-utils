@@ -1,7 +1,7 @@
 package com.forsvarir.file.utils.fileclient.services;
 
 import com.forsvarir.file.utils.common.api.data.BatchDetail;
-import com.forsvarir.file.utils.fileclient.services.data.FileDetails;
+import com.forsvarir.file.utils.common.api.data.FileDetails;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

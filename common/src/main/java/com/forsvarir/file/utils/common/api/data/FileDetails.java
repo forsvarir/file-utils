@@ -1,4 +1,4 @@
-package com.forsvarir.file.utils.fileclient.services.data;
+package com.forsvarir.file.utils.common.api.data;
 
 public class FileDetails {
     private final String name;
