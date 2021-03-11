@@ -1,6 +1,7 @@
 package com.forsvarir.file.utils.fileclient.services;
 
 import com.forsvarir.file.utils.fileclient.services.data.BatchInformation;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,12 +27,18 @@ class FileDetailsUploaderTest {
     @Mock
     private FileDetailsService fileService;
 
+    @Mock
+    private FileInformationService fileInformationService;
+
     @InjectMocks
     private FileDetailsUploader uploader;
 
     @BeforeEach
     void beforeEach() {
         when(fileWalker.apply(any())).thenReturn(Stream.empty());
+
+        BatchInformation newBatchInformation = createBatchInformation(1);
+        when(batchService.createNewRun()).thenReturn(newBatchInformation);
     }
 
     @Test
@@ -42,9 +49,8 @@ class FileDetailsUploaderTest {
     }
 
     @Test
-    void processFolder_createsFilesWithRunId() {
-        BatchInformation newBatchInformation = new BatchInformation();
-        newBatchInformation.setBatchId(55);
+    void processFolder_newRun_createsFilesWithRunId() {
+        BatchInformation newBatchInformation = createBatchInformation(55);
         when(batchService.createNewRun()).thenReturn(newBatchInformation);
 
         when(fileWalker.apply(any())).thenReturn(Stream.of(
@@ -55,5 +61,24 @@ class FileDetailsUploaderTest {
         uploader.processFolder("someFolder");
 
         verify(fileService, times(3)).createFile(eq(55), any());
+    }
+
+    @Test
+    void processFolder_newRun_getsFileDetailsFromEachPath() {
+        when(fileWalker.apply(any())).thenReturn(Stream.of(
+                Path.of("File1"),
+                Path.of("File2"),
+                Path.of("File3")
+        ));
+        uploader.processFolder("someFolder");
+
+        verify(fileInformationService).toFileDetails(Path.of("File1"));
+    }
+
+    @NotNull
+    private BatchInformation createBatchInformation(int batchId) {
+        BatchInformation newBatchInformation = new BatchInformation();
+        newBatchInformation.setBatchId(batchId);
+        return newBatchInformation;
     }
 }

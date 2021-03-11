@@ -1,7 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
 import com.forsvarir.common.utils.file.FileWalker;
-import com.forsvarir.file.utils.fileclient.services.data.FileDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +18,9 @@ public class FileDetailsUploader {
     @Autowired
     private FileDetailsService fileService;
 
+    @Autowired
+    private FileInformationService fileInformationService;
+
     @SuppressWarnings("unused")
     FileDetailsUploader() {
         this.fileWalker = FileWalker::walk;
@@ -27,15 +29,17 @@ public class FileDetailsUploader {
     @SuppressWarnings("unused")
     FileDetailsUploader(Function<Path, Stream<Path>> fileWalker,
                         FileDetailsService fileService,
-                        BatchService batchService) {
+                        BatchService batchService,
+                        FileInformationService fileInformationService) {
         this.fileWalker = fileWalker;
         this.batchService = batchService;
         this.fileService = fileService;
+        this.fileInformationService = fileInformationService;
     }
 
     public void processFolder(String pathToProcess) {
         var batchInformation = batchService.createNewRun();
         fileWalker.apply(Path.of(pathToProcess))
-                .forEach(f -> fileService.createFile(batchInformation.getBatchId(), new FileDetails(f.toString())));
+                .forEach(f -> fileService.createFile(batchInformation.getBatchId(), fileInformationService.toFileDetails(f)));
     }
 }
