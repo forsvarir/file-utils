@@ -42,7 +42,7 @@ class BatchServiceTest {
     @Test
     void createNewRun_returnsAPIResult() {
         BatchDetail expectedBatchDetail = new BatchDetail();
-        when(restTemplate.postForObject(any(String.class), any(), any(Class.class))).thenReturn(expectedBatchDetail);
+        when(restTemplate.postForObject(any(String.class), any(), any())).thenReturn(expectedBatchDetail);
 
         var returnedBatchInformation = batchService.createNewRun();
 
