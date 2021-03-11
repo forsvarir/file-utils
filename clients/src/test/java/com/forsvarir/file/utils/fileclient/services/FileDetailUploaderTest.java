@@ -1,7 +1,7 @@
 package com.forsvarir.file.utils.fileclient.services;
 
 import com.forsvarir.file.utils.common.api.data.BatchDetail;
-import com.forsvarir.file.utils.common.api.data.FileDetails;
+import com.forsvarir.file.utils.common.api.data.FileDetail;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class FileDetailsUploaderTest {
+class FileDetailUploaderTest {
 
     @Mock
     private Function<Path, Stream<Path>> fileWalker;
@@ -78,9 +78,9 @@ class FileDetailsUploaderTest {
 
     @Test
     void processFolder_newRun_storesFileDetails() {
-        FileDetails fileDetail1 = createDetails("File1");
-        FileDetails fileDetail2 = createDetails("File2");
-        FileDetails fileDetail3 = createDetails("File3");
+        FileDetail fileDetail1 = createDetails("File1");
+        FileDetail fileDetail2 = createDetails("File2");
+        FileDetail fileDetail3 = createDetails("File3");
         when(fileWalker.apply(any())).thenReturn(Stream.of(
                 Path.of("aFile"),
                 Path.of("aFile"),
@@ -98,8 +98,8 @@ class FileDetailsUploaderTest {
     }
 
     @NotNull
-    private FileDetails createDetails(String fileName) {
-        return new FileDetails(fileName, "", 0);
+    private FileDetail createDetails(String fileName) {
+        return new FileDetail(fileName, "", 0);
     }
 
 

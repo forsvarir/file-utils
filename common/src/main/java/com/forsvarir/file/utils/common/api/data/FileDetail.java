@@ -1,11 +1,11 @@
 package com.forsvarir.file.utils.common.api.data;
 
-public class FileDetails {
+public class FileDetail {
     private final String name;
     private final String path;
     private final long size;
 
-    public FileDetails(String name, String path, long size) {
+    public FileDetail(String name, String path, long size) {
         this.name = name;
         this.path = path;
         this.size = size;

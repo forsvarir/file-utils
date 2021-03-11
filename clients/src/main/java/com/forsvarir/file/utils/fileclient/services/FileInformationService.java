@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.common.api.data.FileDetails;
+import com.forsvarir.file.utils.common.api.data.FileDetail;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -9,8 +9,8 @@ import java.nio.file.Path;
 
 @Service
 public class FileInformationService {
-    public FileDetails toFileDetails(Path filePath) {
-        return new FileDetails(filePath.getFileName().toString(),
+    public FileDetail toFileDetails(Path filePath) {
+        return new FileDetail(filePath.getFileName().toString(),
                 filePath.getParent().toString(),
                 getSize(filePath));
     }
