@@ -99,7 +99,7 @@ class FileDetailsUploaderTest {
 
     @NotNull
     private FileDetails createDetails(String fileName) {
-        return new FileDetails(fileName);
+        return new FileDetails(fileName, "", 0);
     }
 
 
