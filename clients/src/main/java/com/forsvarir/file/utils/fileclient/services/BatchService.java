@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.fileclient.services.data.BatchInformation;
+import com.forsvarir.file.utils.common.api.data.BatchDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Service;
@@ -12,10 +12,10 @@ public class BatchService {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    public BatchInformation createNewRun() {
+    public BatchDetail createNewRun() {
         return restTemplateBuilder
                 .build()
-                .postForObject(SERVICE_URL, null, BatchInformation.class);
+                .postForObject(SERVICE_URL, null, BatchDetail.class);
 
     }
 }

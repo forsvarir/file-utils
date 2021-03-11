@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.fileclient.services.data.BatchInformation;
+import com.forsvarir.file.utils.common.api.data.BatchDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,16 +36,16 @@ class BatchServiceTest {
     void createNewRun_callsRemoteAPI() {
         batchService.createNewRun();
 
-        verify(restTemplate).postForObject(BatchService.SERVICE_URL, null, BatchInformation.class);
+        verify(restTemplate).postForObject(BatchService.SERVICE_URL, null, BatchDetail.class);
     }
 
     @Test
     void createNewRun_returnsAPIResult() {
-        BatchInformation expectedBatchInformation = new BatchInformation();
-        when(restTemplate.postForObject(any(String.class), any(), any(Class.class))).thenReturn(expectedBatchInformation);
+        BatchDetail expectedBatchDetail = new BatchDetail();
+        when(restTemplate.postForObject(any(String.class), any(), any(Class.class))).thenReturn(expectedBatchDetail);
 
         var returnedBatchInformation = batchService.createNewRun();
 
-        assertThat(returnedBatchInformation).isSameAs(expectedBatchInformation);
+        assertThat(returnedBatchInformation).isSameAs(expectedBatchDetail);
     }
 }

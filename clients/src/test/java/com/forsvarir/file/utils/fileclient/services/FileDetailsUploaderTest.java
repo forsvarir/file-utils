@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.fileclient.services.data.BatchInformation;
+import com.forsvarir.file.utils.common.api.data.BatchDetail;
 import com.forsvarir.file.utils.fileclient.services.data.FileDetails;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,8 +38,8 @@ class FileDetailsUploaderTest {
     void beforeEach() {
         when(fileWalker.apply(any())).thenReturn(Stream.empty());
 
-        BatchInformation newBatchInformation = createBatchInformation(1);
-        when(batchService.createNewRun()).thenReturn(newBatchInformation);
+        BatchDetail newBatchDetail = createBatchInformation(1);
+        when(batchService.createNewRun()).thenReturn(newBatchDetail);
     }
 
     @Test
@@ -51,8 +51,8 @@ class FileDetailsUploaderTest {
 
     @Test
     void processFolder_newRun_createsFilesWithRunId() {
-        BatchInformation newBatchInformation = createBatchInformation(55);
-        when(batchService.createNewRun()).thenReturn(newBatchInformation);
+        BatchDetail newBatchDetail = createBatchInformation(55L);
+        when(batchService.createNewRun()).thenReturn(newBatchDetail);
 
         when(fileWalker.apply(any())).thenReturn(Stream.of(
                 Path.of("File1"),
@@ -61,7 +61,7 @@ class FileDetailsUploaderTest {
         ));
         uploader.processFolder("someFolder");
 
-        verify(fileService, times(3)).createFile(eq(55), any());
+        verify(fileService, times(3)).createFile(eq(55L), any());
     }
 
     @Test
@@ -92,9 +92,9 @@ class FileDetailsUploaderTest {
                 .thenReturn(fileDetail3);
         uploader.processFolder("someFolder");
 
-        verify(fileService).createFile(anyInt(), eq(fileDetail1));
-        verify(fileService).createFile(anyInt(), eq(fileDetail2));
-        verify(fileService).createFile(anyInt(), eq(fileDetail3));
+        verify(fileService).createFile(anyLong(), eq(fileDetail1));
+        verify(fileService).createFile(anyLong(), eq(fileDetail2));
+        verify(fileService).createFile(anyLong(), eq(fileDetail3));
     }
 
     @NotNull
@@ -104,9 +104,7 @@ class FileDetailsUploaderTest {
 
 
     @NotNull
-    private BatchInformation createBatchInformation(int batchId) {
-        BatchInformation newBatchInformation = new BatchInformation();
-        newBatchInformation.setId(batchId);
-        return newBatchInformation;
+    private BatchDetail createBatchInformation(long batchId) {
+        return new BatchDetail(batchId);
     }
 }

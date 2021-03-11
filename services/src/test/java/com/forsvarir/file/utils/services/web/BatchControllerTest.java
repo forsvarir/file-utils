@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.services.web;
 
-import com.forsvarir.file.utils.services.model.BatchDetail;
+import com.forsvarir.file.utils.common.api.data.BatchDetail;
 import com.forsvarir.file.utils.services.services.BatchService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;

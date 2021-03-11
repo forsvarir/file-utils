@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.services.services;
 
-import com.forsvarir.file.utils.services.model.BatchDetail;
+import com.forsvarir.file.utils.common.api.data.BatchDetail;
 import org.springframework.stereotype.Service;
 
 @Service
