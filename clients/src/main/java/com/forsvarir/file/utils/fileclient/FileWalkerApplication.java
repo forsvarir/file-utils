@@ -1,14 +1,11 @@
 package com.forsvarir.file.utils.fileclient;
 
-import com.forsvarir.common.utils.file.FileWalker;
 import com.forsvarir.file.utils.fileclient.services.FileDetailsUploader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-
-import java.nio.file.Path;
 
 @SpringBootApplication
 public class FileWalkerApplication implements CommandLineRunner {

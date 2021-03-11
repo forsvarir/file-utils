@@ -24,6 +24,7 @@ public class FileDetailsUploader {
         this.fileWalker = FileWalker::walk;
     }
 
+    @SuppressWarnings("unused")
     FileDetailsUploader(Function<Path, Stream<Path>> fileWalker,
                         FileDetailsService fileService,
                         BatchService batchService) {
