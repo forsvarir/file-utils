@@ -1,13 +1,13 @@
 package com.forsvarir.file.utils.fileclient.services.data;
 
 public class BatchInformation {
-    private int batchId;
+    private int id;
 
-    public void setBatchId(int batchId) {
-        this.batchId = batchId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getBatchId() {
-        return batchId;
+    public int getId() {
+        return id;
     }
 }

@@ -106,7 +106,7 @@ class FileDetailsUploaderTest {
     @NotNull
     private BatchInformation createBatchInformation(int batchId) {
         BatchInformation newBatchInformation = new BatchInformation();
-        newBatchInformation.setBatchId(batchId);
+        newBatchInformation.setId(batchId);
         return newBatchInformation;
     }
 }

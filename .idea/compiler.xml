@@ -18,6 +18,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="clients" options="-parameters" />
       <module name="file-utils" options="-parameters" />
       <module name="services" options="-parameters" />
     </option>
