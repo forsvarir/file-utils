@@ -1,6 +1,7 @@
 package com.forsvarir.file.utils.fileclient.services;
 
 import com.forsvarir.file.utils.fileclient.services.data.BatchInformation;
+import com.forsvarir.file.utils.fileclient.services.data.FileDetails;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -74,6 +75,33 @@ class FileDetailsUploaderTest {
 
         verify(fileInformationService).toFileDetails(Path.of("File1"));
     }
+
+    @Test
+    void processFolder_newRun_storesFileDetails() {
+        FileDetails fileDetail1 = createDetails("File1");
+        FileDetails fileDetail2 = createDetails("File2");
+        FileDetails fileDetail3 = createDetails("File3");
+        when(fileWalker.apply(any())).thenReturn(Stream.of(
+                Path.of("aFile"),
+                Path.of("aFile"),
+                Path.of("aFile")
+        ));
+        when(fileInformationService.toFileDetails(any()))
+                .thenReturn(fileDetail1)
+                .thenReturn(fileDetail2)
+                .thenReturn(fileDetail3);
+        uploader.processFolder("someFolder");
+
+        verify(fileService).createFile(anyInt(), eq(fileDetail1));
+        verify(fileService).createFile(anyInt(), eq(fileDetail2));
+        verify(fileService).createFile(anyInt(), eq(fileDetail3));
+    }
+
+    @NotNull
+    private FileDetails createDetails(String fileName) {
+        return new FileDetails(fileName);
+    }
+
 
     @NotNull
     private BatchInformation createBatchInformation(int batchId) {
