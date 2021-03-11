@@ -9,7 +9,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 
 @SpringBootApplication
 public class FileWalkerApplication implements CommandLineRunner {
-    public static final String DEFAULT_SEARCH_FOLDER = "/bin";
+    public static final String DEFAULT_SEARCH_FOLDER = "/tmp";
 
     @Autowired
     FileDetailsUploader fileDetailsUploader;
