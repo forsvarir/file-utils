@@ -1,7 +1,7 @@
 package com.forsvarir.file.utils.services.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.forsvarir.file.utils.services.model.FileDetail;
+import com.forsvarir.file.utils.common.api.data.FileDetail;
 import com.forsvarir.file.utils.services.services.FileService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,12 +19,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 class FileControllerTest {
 
@@ -43,7 +37,7 @@ class FileControllerTest {
     @Test
     @DisplayName("GET /file-utils/files/1 - Found")
     void getNormalFileIsFound() throws Exception {
-        var expectedFileDetails = new FileDetail("/oh/", "SomeFile", 5000L, 1);
+        var expectedFileDetails = new FileDetail("SomeFile", "/oh/", 5000L, 1);
         Mockito.when(fileService.findById(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
         var response = mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
@@ -55,7 +49,7 @@ class FileControllerTest {
     @Test
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
-        var expectedFileDetails = new FileDetail("/savedPath/", "SavedFile", 999L, 55);
+        var expectedFileDetails = new FileDetail("SavedFile", "/savedPath/", 999L, 55);
         Mockito.when(fileService.save(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
@@ -76,7 +70,7 @@ class FileControllerTest {
     @Test
     @DisplayName("POST /file-utils/files - Valid")
     void postNormalFileIsSavedCorrectly() throws Exception {
-        var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
+        var postedFileDetails = new FileDetail("PostedFile", "/postedPath/", 5000L, 0);
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
         Mockito.when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails);
 

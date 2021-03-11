@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.services.web;
 
-import com.forsvarir.file.utils.services.model.FileDetail;
+import com.forsvarir.file.utils.common.api.data.FileDetail;
 import com.forsvarir.file.utils.services.services.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
