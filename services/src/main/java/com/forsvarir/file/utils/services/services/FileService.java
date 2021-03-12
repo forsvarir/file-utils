@@ -13,6 +13,7 @@ public class FileService {
 
     // TODO: Stubbed
     public FileDetail save(FileDetail newFile) {
+        System.out.println(newFile.getPath() + '/' + newFile.getName());
         return newFile;
     }
 }

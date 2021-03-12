@@ -1,6 +1,7 @@
 package com.forsvarir.file.utils.services.web;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.common.api.data.FileDetail;
 import com.forsvarir.file.utils.services.services.FileService;
 import org.hamcrest.Matchers;
@@ -70,9 +71,10 @@ class FileControllerTest {
     @Test
     @DisplayName("POST /file-utils/files - Valid")
     void postNormalFileIsSavedCorrectly() throws Exception {
-        var postedFileDetails = new FileDetail("PostedFile", "/postedPath/", 5000L, 0);
+        var postedFileDetails = new CreateFileRequest(99,
+                new FileDetail("PostedFile", "/postedPath/", 5000L, 0));
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        Mockito.when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails);
+        Mockito.when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails.getFileDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)

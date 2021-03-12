@@ -1,6 +1,6 @@
 package com.forsvarir.file.utils.services.web;
 
-import com.forsvarir.file.utils.common.api.data.FileDetail;
+import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.services.services.FileService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,10 +26,10 @@ public class FileController {
     }
 
     @PostMapping("/file-utils/files")
-    public ResponseEntity<?> addFile(@RequestBody FileDetail newFile)     {
-        var savedFile = fileService.save(newFile);
+    public ResponseEntity<?> addFile(@RequestBody CreateFileRequest newFile) {
+        var savedFile = fileService.save(newFile.getFileDetail());
         try {
-            return ResponseEntity.created(new URI("/file-utils/files/"+ savedFile.getId()))
+            return ResponseEntity.created(new URI("/file-utils/files/" + savedFile.getId()))
                     .body(savedFile);
         } catch (URISyntaxException e) {
             e.printStackTrace();
