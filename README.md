@@ -39,10 +39,25 @@ Returns FileDetails with given id
 
 Adds a file object if it doesn't already exist
 
-###Data
+### Data
+
 FileDetails
+
 * Id
 * BatchId / ClientId
 * Name
 * Path
 * Size
+
+## Requirements
+
+### Postgresql database. This can be setup
+
+using the following instructions at the command line:
+
+* sudo -u postgres psql
+* create user fileutil;
+* alter user fileutil with encrypted password 'fileutil';
+* create database fileutildb;
+* grant all privileges on database fileutildb to fileutil;
+* quit;
