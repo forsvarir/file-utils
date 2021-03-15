@@ -41,7 +41,7 @@ class FileControllerTest {
         var expectedFileDetails = new FileDetail("SomeFile", "/oh/", 5000L, 1);
         Mockito.when(fileService.findById(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
-        var response = mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
+        mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.name", Matchers.is("SomeFile")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.size", Matchers.is(5000)));
