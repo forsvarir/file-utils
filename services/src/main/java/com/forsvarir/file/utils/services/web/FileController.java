@@ -25,7 +25,7 @@ public class FileController {
 
     @PostMapping("/file-utils/files")
     public ResponseEntity<?> addFile(@RequestBody CreateFileRequest newFile) {
-        var savedFile = fileService.save(newFile.getFileDetail());
+        var savedFile = fileService.addFile(newFile.getFileDetail());
 
         return ResponseEntity.created(URI.create("/file-utils/files/" + savedFile.getId()))
                 .body(savedFile);

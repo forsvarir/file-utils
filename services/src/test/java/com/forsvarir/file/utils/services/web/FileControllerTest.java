@@ -51,7 +51,7 @@ class FileControllerTest {
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
         var expectedFileDetails = new FileDetail("SavedFile", "/savedPath/", 999L, 55);
-        Mockito.when(fileService.save(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
+        Mockito.when(fileService.addFile(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
 
@@ -74,7 +74,7 @@ class FileControllerTest {
         var postedFileDetails = new CreateFileRequest(99,
                 new FileDetail("PostedFile", "/postedPath/", 5000L, 0));
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        Mockito.when(fileService.save(savedFileCaptor.capture())).thenReturn(postedFileDetails.getFileDetail());
+        Mockito.when(fileService.addFile(savedFileCaptor.capture())).thenReturn(postedFileDetails.getFileDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
