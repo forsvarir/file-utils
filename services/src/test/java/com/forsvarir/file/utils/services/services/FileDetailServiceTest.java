@@ -1,7 +1,7 @@
 package com.forsvarir.file.utils.services.services;
 
 import com.forsvarir.file.utils.common.api.data.FileDetail;
-import com.forsvarir.file.utils.services.db.FileRepository;
+import com.forsvarir.file.utils.services.db.FileInformationRepository;
 import com.forsvarir.file.utils.services.db.model.FileInformation;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class FileServiceTest {
+class FileDetailServiceTest {
 
     @Mock
-    FileRepository repository;
+    FileInformationRepository repository;
 
     @InjectMocks
-    FileService service;
+    FileDetailService service;
 
     @Test
     void addFile_returnsSavedInstance() {

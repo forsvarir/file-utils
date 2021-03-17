@@ -3,7 +3,7 @@ package com.forsvarir.file.utils.services.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.common.api.data.FileDetail;
-import com.forsvarir.file.utils.services.services.FileService;
+import com.forsvarir.file.utils.services.services.FileDetailService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,13 +25,13 @@ class FileControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    private FileService fileService;
+    private FileDetailService fileDetailService;
 
     @BeforeEach
     void beforeEach() {
-        fileService = mock(FileService.class);
+        fileDetailService = mock(FileDetailService.class);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new FileController(fileService))
+                .standaloneSetup(new FileController(fileDetailService))
                 .build();
     }
 
@@ -39,7 +39,7 @@ class FileControllerTest {
     @DisplayName("GET /file-utils/files/1 - Found")
     void getNormalFileIsFound() throws Exception {
         var expectedFileDetails = new FileDetail("SomeFile", "/oh/", 5000L, 1);
-        when(fileService.findById(any())).thenReturn(expectedFileDetails);
+        when(fileDetailService.findById(any())).thenReturn(expectedFileDetails);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -51,7 +51,7 @@ class FileControllerTest {
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
         var expectedFileDetails = new FileDetail("SavedFile", "/savedPath/", 999L, 55);
-        when(fileService.addFile(any())).thenReturn(expectedFileDetails);
+        when(fileDetailService.addFile(any())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
 
@@ -74,13 +74,13 @@ class FileControllerTest {
         var postedFileDetails = new CreateFileRequest(99,
                 new FileDetail("PostedFile", "/postedPath/", 5000L, 0));
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        when(fileService.addFile(any())).thenReturn(postedFileDetails.getFileDetail());
+        when(fileDetailService.addFile(any())).thenReturn(postedFileDetails.getFileDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postedFileDetails)));
 
-        verify(fileService).addFile(savedFileCaptor.capture());
+        verify(fileDetailService).addFile(savedFileCaptor.capture());
         assertThat(savedFileCaptor.getAllValues()).hasSize(1);
         assertThat(savedFileCaptor.getValue().getId()).isEqualTo(0);
         assertThat(savedFileCaptor.getValue().getName()).isEqualTo("PostedFile");
