@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -44,10 +45,11 @@ class FileServiceTest {
         FileDetail fileDetail = new FileDetail("Name", "Path", expectedSize);
         ArgumentCaptor<FileInformation> fileInformationCaptor = ArgumentCaptor.forClass(FileInformation.class);
 
-        when(repository.save(fileInformationCaptor.capture())).thenReturn(new FileInformation());
+        when(repository.save(any())).thenReturn(new FileInformation());
 
         service.addFile(fileDetail);
 
+        verify(repository).save(fileInformationCaptor.capture());
         assertThat(fileInformationCaptor.getAllValues()).hasSize(1);
         var capturedInformation = fileInformationCaptor.getValue();
 

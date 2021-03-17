@@ -9,8 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +18,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class FileControllerTest {
 
@@ -29,7 +29,7 @@ class FileControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        fileService = Mockito.mock(FileService.class);
+        fileService = mock(FileService.class);
         mockMvc = MockMvcBuilders
                 .standaloneSetup(new FileController(fileService))
                 .build();
@@ -39,7 +39,7 @@ class FileControllerTest {
     @DisplayName("GET /file-utils/files/1 - Found")
     void getNormalFileIsFound() throws Exception {
         var expectedFileDetails = new FileDetail("SomeFile", "/oh/", 5000L, 1);
-        Mockito.when(fileService.findById(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
+        when(fileService.findById(any())).thenReturn(expectedFileDetails);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/file-utils/files/{id}", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -51,7 +51,7 @@ class FileControllerTest {
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
         var expectedFileDetails = new FileDetail("SavedFile", "/savedPath/", 999L, 55);
-        Mockito.when(fileService.addFile(ArgumentMatchers.any())).thenReturn(expectedFileDetails);
+        when(fileService.addFile(any())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
 
@@ -74,12 +74,13 @@ class FileControllerTest {
         var postedFileDetails = new CreateFileRequest(99,
                 new FileDetail("PostedFile", "/postedPath/", 5000L, 0));
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        Mockito.when(fileService.addFile(savedFileCaptor.capture())).thenReturn(postedFileDetails.getFileDetail());
+        when(fileService.addFile(any())).thenReturn(postedFileDetails.getFileDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postedFileDetails)));
 
+        verify(fileService).addFile(savedFileCaptor.capture());
         assertThat(savedFileCaptor.getAllValues()).hasSize(1);
         assertThat(savedFileCaptor.getValue().getId()).isEqualTo(0);
         assertThat(savedFileCaptor.getValue().getName()).isEqualTo("PostedFile");
