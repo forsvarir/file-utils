@@ -36,10 +36,9 @@ class FileDetailsServiceTest {
 
     @Test
     void createNewFile_callsRemoteAPI() {
-        long batchId = 53;
-        FileDetail fileDetail = new FileDetail("a file", "a path", 55L);
+        FileDetail fileDetail = new FileDetail("a file", "a path", 55L, 53L, 0L);
 
-        fileDetailsService.createFile(batchId, fileDetail);
+        fileDetailsService.createFile(fileDetail);
 
         ArgumentCaptor<CreateFileRequest> createFileCaptor = ArgumentCaptor.forClass(CreateFileRequest.class);
         verify(restTemplate).postForObject(eq(FileDetailsService.SERVICE_URL), createFileCaptor.capture(), eq(FileDetail.class));
@@ -53,13 +52,12 @@ class FileDetailsServiceTest {
 
     @Test
     void createNewFile_returnsAPIResult() {
-        long batchId = 53;
-        FileDetail fileDetail = new FileDetail("a file", "a path", 55L);
+        FileDetail fileDetail = new FileDetail("a file", "a path", 55L, 53L);
 
         FileDetail expectedFileDetail = new FileDetail();
         when(restTemplate.postForObject(any(String.class), any(), any())).thenReturn(expectedFileDetail);
 
-        var returnedBatchInformation = fileDetailsService.createFile(batchId, fileDetail);
+        var returnedBatchInformation = fileDetailsService.createFile(fileDetail);
 
         assertThat(returnedBatchInformation).isSameAs(expectedFileDetail);
     }

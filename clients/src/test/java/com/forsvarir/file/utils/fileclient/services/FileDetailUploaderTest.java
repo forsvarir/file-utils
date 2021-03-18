@@ -50,21 +50,6 @@ class FileDetailUploaderTest {
     }
 
     @Test
-    void processFolder_newRun_createsFilesWithRunId() {
-        BatchDetail newBatchDetail = createBatchInformation(55L);
-        when(batchService.createNewRun()).thenReturn(newBatchDetail);
-
-        when(fileWalker.apply(any())).thenReturn(Stream.of(
-                Path.of("File1"),
-                Path.of("File2"),
-                Path.of("File3")
-        ));
-        uploader.processFolder("someFolder");
-
-        verify(fileService, times(3)).createFile(eq(55L), any());
-    }
-
-    @Test
     void processFolder_newRun_getsFileDetailsFromEachPath() {
         when(fileWalker.apply(any())).thenReturn(Stream.of(
                 Path.of("File1"),
@@ -107,9 +92,9 @@ class FileDetailUploaderTest {
                 .thenReturn(fileDetail3);
         uploader.processFolder("someFolder");
 
-        verify(fileService).createFile(anyLong(), eq(fileDetail1));
-        verify(fileService).createFile(anyLong(), eq(fileDetail2));
-        verify(fileService).createFile(anyLong(), eq(fileDetail3));
+        verify(fileService).createFile(fileDetail1);
+        verify(fileService).createFile(fileDetail2);
+        verify(fileService).createFile(fileDetail3);
     }
 
     @NotNull

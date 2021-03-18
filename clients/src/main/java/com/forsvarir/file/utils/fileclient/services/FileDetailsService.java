@@ -13,8 +13,8 @@ public class FileDetailsService {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    public FileDetail createFile(long batchId, FileDetail fileDetail) {
-        CreateFileRequest createFileRequest = new CreateFileRequest(batchId, fileDetail);
+    public FileDetail createFile(FileDetail fileDetail) {
+        CreateFileRequest createFileRequest = new CreateFileRequest(fileDetail.getClientId(), fileDetail);
         return restTemplateBuilder
                 .build()
                 .postForObject(SERVICE_URL, createFileRequest, FileDetail.class);
