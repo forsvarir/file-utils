@@ -28,6 +28,10 @@ public class FileDetail {
         this.clientId = clientId;
     }
 
+    public FileDetail(FileDetail fileDetail, long batchId) {
+        this(fileDetail.getName(), fileDetail.getPath(), fileDetail.getSize(), batchId, fileDetail.getId());
+    }
+
     public String getName() {
         return name;
     }
