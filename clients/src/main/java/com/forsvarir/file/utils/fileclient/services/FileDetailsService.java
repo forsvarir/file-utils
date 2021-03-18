@@ -1,6 +1,5 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.common.api.data.FileDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,10 +12,9 @@ public class FileDetailsService {
     @Autowired
     RestTemplateBuilder restTemplateBuilder;
 
-    public FileDetail createFile(long batchId, FileDetail fileDetail) {
-        CreateFileRequest createFileRequest = new CreateFileRequest(batchId, fileDetail);
+    public FileDetail createFile(FileDetail fileDetail) {
         return restTemplateBuilder
                 .build()
-                .postForObject(SERVICE_URL, createFileRequest, FileDetail.class);
+                .postForObject(SERVICE_URL, fileDetail, FileDetail.class);
     }
 }

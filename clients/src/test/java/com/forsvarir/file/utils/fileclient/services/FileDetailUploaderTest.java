@@ -50,7 +50,19 @@ class FileDetailUploaderTest {
     }
 
     @Test
-    void processFolder_newRun_createsFilesWithRunId() {
+    void processFolder_newRun_getsFileDetailsFromEachPath() {
+        when(fileWalker.apply(any())).thenReturn(Stream.of(
+                Path.of("File1"),
+                Path.of("File2"),
+                Path.of("File3")
+        ));
+        uploader.processFolder("someFolder");
+
+        verify(fileInformationService).toFileDetails(eq(Path.of("File1")), anyLong());
+    }
+
+    @Test
+    void processFolder_newRun_getsFileDetailsFromEachPathWithBatchId() {
         BatchDetail newBatchDetail = createBatchInformation(55L);
         when(batchService.createNewRun()).thenReturn(newBatchDetail);
 
@@ -61,19 +73,7 @@ class FileDetailUploaderTest {
         ));
         uploader.processFolder("someFolder");
 
-        verify(fileService, times(3)).createFile(eq(55L), any());
-    }
-
-    @Test
-    void processFolder_newRun_getsFileDetailsFromEachPath() {
-        when(fileWalker.apply(any())).thenReturn(Stream.of(
-                Path.of("File1"),
-                Path.of("File2"),
-                Path.of("File3")
-        ));
-        uploader.processFolder("someFolder");
-
-        verify(fileInformationService).toFileDetails(Path.of("File1"));
+        verify(fileInformationService, times(3)).toFileDetails(any(), eq(55L));
     }
 
     @Test
@@ -86,15 +86,15 @@ class FileDetailUploaderTest {
                 Path.of("aFile"),
                 Path.of("aFile")
         ));
-        when(fileInformationService.toFileDetails(any()))
+        when(fileInformationService.toFileDetails(any(), anyLong()))
                 .thenReturn(fileDetail1)
                 .thenReturn(fileDetail2)
                 .thenReturn(fileDetail3);
         uploader.processFolder("someFolder");
 
-        verify(fileService).createFile(anyLong(), eq(fileDetail1));
-        verify(fileService).createFile(anyLong(), eq(fileDetail2));
-        verify(fileService).createFile(anyLong(), eq(fileDetail3));
+        verify(fileService).createFile(fileDetail1);
+        verify(fileService).createFile(fileDetail2);
+        verify(fileService).createFile(fileDetail3);
     }
 
     @NotNull

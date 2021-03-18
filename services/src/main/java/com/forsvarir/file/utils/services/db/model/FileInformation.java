@@ -10,6 +10,9 @@ public class FileInformation {
     private String name;
     private String path;
     private long size;
+
+    private long clientId;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -28,6 +31,14 @@ public class FileInformation {
         this.name = name;
         this.path = path;
         this.size = size;
+    }
+
+    public FileInformation(String name, String path, long size, long clientId, long id) {
+        this.id = id;
+        this.name = name;
+        this.path = path;
+        this.size = size;
+        this.clientId = clientId;
     }
 
     public String getName() {
@@ -62,4 +73,11 @@ public class FileInformation {
         this.id = id;
     }
 
+    public long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(long clientId) {
+        this.clientId = clientId;
+    }
 }
