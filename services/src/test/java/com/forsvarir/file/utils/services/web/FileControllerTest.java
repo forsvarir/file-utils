@@ -3,6 +3,7 @@ package com.forsvarir.file.utils.services.web;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.common.api.data.FileDetail;
+import com.forsvarir.file.utils.services.services.BatchFileProcessing;
 import com.forsvarir.file.utils.services.services.FileDetailService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,12 +27,14 @@ class FileControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private FileDetailService fileDetailService;
+    private BatchFileProcessing batchFileProcessingService;
 
     @BeforeEach
     void beforeEach() {
         fileDetailService = mock(FileDetailService.class);
+        batchFileProcessingService = mock(BatchFileProcessing.class);
         mockMvc = MockMvcBuilders
-                .standaloneSetup(new FileController(fileDetailService))
+                .standaloneSetup(new FileController(fileDetailService, batchFileProcessingService))
                 .build();
     }
 
@@ -51,7 +54,7 @@ class FileControllerTest {
     @DisplayName("POST /file-utils/files - Success")
     void postNormalFileIsAdded() throws Exception {
         var expectedFileDetails = new FileDetail("SavedFile", "/savedPath/", 999L, 55);
-        when(fileDetailService.addFile(any())).thenReturn(expectedFileDetails);
+        when(batchFileProcessingService.addFileToBatch(any(), anyLong())).thenReturn(expectedFileDetails);
 
         var postedFileDetails = new FileDetail("/postedPath/", "PostedFile", 5000L, 0);
 
@@ -71,16 +74,16 @@ class FileControllerTest {
     @Test
     @DisplayName("POST /file-utils/files - Valid")
     void postNormalFileIsSavedCorrectly() throws Exception {
-        var postedFileDetails = new CreateFileRequest(99,
+        var postedFileDetails = new CreateFileRequest(99L,
                 new FileDetail("PostedFile", "/postedPath/", 5000L, 0));
         ArgumentCaptor<FileDetail> savedFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
-        when(fileDetailService.addFile(any())).thenReturn(postedFileDetails.getFileDetail());
+        when(batchFileProcessingService.addFileToBatch(any(), anyLong())).thenReturn(postedFileDetails.getFileDetail());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/file-utils/files")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postedFileDetails)));
 
-        verify(fileDetailService).addFile(savedFileCaptor.capture());
+        verify(batchFileProcessingService).addFileToBatch(savedFileCaptor.capture(), eq(99L));
         assertThat(savedFileCaptor.getAllValues()).hasSize(1);
         assertThat(savedFileCaptor.getValue().getId()).isEqualTo(0);
         assertThat(savedFileCaptor.getValue().getName()).isEqualTo("PostedFile");
