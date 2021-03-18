@@ -1,6 +1,5 @@
 package com.forsvarir.file.utils.fileclient.services;
 
-import com.forsvarir.file.utils.common.api.data.CreateFileRequest;
 import com.forsvarir.file.utils.common.api.data.FileDetail;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,14 +39,14 @@ class FileDetailsServiceTest {
 
         fileDetailsService.createFile(fileDetail);
 
-        ArgumentCaptor<CreateFileRequest> createFileCaptor = ArgumentCaptor.forClass(CreateFileRequest.class);
+        ArgumentCaptor<FileDetail> createFileCaptor = ArgumentCaptor.forClass(FileDetail.class);
         verify(restTemplate).postForObject(eq(FileDetailsService.SERVICE_URL), createFileCaptor.capture(), eq(FileDetail.class));
 
         var capturedRequest = createFileCaptor.getValue();
-        assertThat(capturedRequest.getBatchId()).isEqualTo(53);
-        assertThat(capturedRequest.getFileDetail().getName()).isEqualTo("a file");
-        assertThat(capturedRequest.getFileDetail().getPath()).isEqualTo("a path");
-        assertThat(capturedRequest.getFileDetail().getSize()).isEqualTo(55L);
+        assertThat(capturedRequest.getClientId()).isEqualTo(53);
+        assertThat(capturedRequest.getName()).isEqualTo("a file");
+        assertThat(capturedRequest.getPath()).isEqualTo("a path");
+        assertThat(capturedRequest.getSize()).isEqualTo(55L);
     }
 
     @Test
