@@ -27,6 +27,13 @@ public class FileController {
                 .body(stubbedFile);
     }
 
+    @GetMapping("/file-utils/files/batch/{id}")
+    public ResponseEntity<?> getAllFiles(@PathVariable Integer id) {
+        var files = batchFileProcessingService.allFiles(id);
+        return ResponseEntity.ok()
+                .body(files);
+    }
+
     @PostMapping("/file-utils/files")
     public ResponseEntity<?> addFile(@RequestBody CreateFileRequest newFile) {
         var savedFile = batchFileProcessingService.addFileToBatch(newFile.getFileDetail(), newFile.getBatchId());

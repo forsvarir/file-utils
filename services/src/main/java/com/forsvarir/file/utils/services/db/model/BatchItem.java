@@ -1,28 +1,26 @@
 package com.forsvarir.file.utils.services.db.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "batch_item")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(discriminatorType = DiscriminatorType.STRING, name = "item_type")
 public class BatchItem {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private long batchId;
-    private long itemId;
-    private String itemType;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "batch_id", referencedColumnName = "id")
+    private Batch batch;
 
     public BatchItem() {
-        this(0, "", 0);
+
     }
 
-    public BatchItem(long batchId, String itemType, long itemIdentifier) {
-        id = 0;
-        this.batchId = batchId;
-        this.itemId = itemIdentifier;
-        this.itemType = itemType;
+    public BatchItem(Batch batch) {
+        this.batch = batch;
     }
 
     public void setId(long id) {
@@ -33,27 +31,11 @@ public class BatchItem {
         return id;
     }
 
-    public long getBatchId() {
-        return batchId;
+    public Batch getBatch() {
+        return batch;
     }
 
-    public void setBatchId(long batchId) {
-        this.batchId = batchId;
-    }
-
-    public long getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(long itemId) {
-        this.itemId = itemId;
-    }
-
-    public String getItemType() {
-        return itemType;
-    }
-
-    public void setItemType(String itemType) {
-        this.itemType = itemType;
+    public void setBatch(Batch batch) {
+        this.batch = batch;
     }
 }
