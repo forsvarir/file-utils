@@ -19,6 +19,6 @@ public class FileDetailService {
     public FileDetail addFile(FileDetail newFile) {
         System.out.println(newFile.getPath() + '/' + newFile.getName());
         var saved = fileInformationRepository.save(new FileInformation(newFile.getName(), newFile.getPath(), newFile.getSize(), newFile.getClientId(), 0));
-        return new FileDetail(saved.getName(), saved.getPath(), saved.getSize(), saved.getId(), saved.getClientId());
+        return new FileDetail(saved.getName(), saved.getPath(), saved.getSize(), saved.getClientId(), saved.getId());
     }
 }

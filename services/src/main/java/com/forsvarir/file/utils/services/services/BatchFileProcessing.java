@@ -13,6 +13,6 @@ public class BatchFileProcessing {
     BatchService batchService;
 
     public FileDetail addFileToBatch(FileDetail fileToAdd, long batchId) {
-        return fileDetailService.addFile(new FileDetail(fileToAdd.getName(), fileToAdd.getPath(), fileToAdd.getSize(), fileToAdd.getId(), batchId));
+        return fileDetailService.addFile(new FileDetail(fileToAdd.getName(), fileToAdd.getPath(), fileToAdd.getSize(), batchId, fileToAdd.getId()));
     }
 }

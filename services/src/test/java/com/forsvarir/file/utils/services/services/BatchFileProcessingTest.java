@@ -51,7 +51,7 @@ class BatchFileProcessingTest {
 
     @Test
     void addFileToBatch_returnsSavedFileDetails() {
-        FileDetail expectedFileDetail = new FileDetail("aFile", "aPath", 55L, 77L, 99L);
+        FileDetail expectedFileDetail = new FileDetail("aFile", "aPath", 55L, 99L, 77L);
 
         when(fileDetailService.addFile(any())).thenReturn(expectedFileDetail);
 

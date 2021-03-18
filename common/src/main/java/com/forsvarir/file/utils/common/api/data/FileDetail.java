@@ -17,10 +17,10 @@ public class FileDetail {
     }
 
     public FileDetail(String name, String path, long size, long id) {
-        this(name, path, size, id, 0);
+        this(name, path, size, 0, id);
     }
 
-    public FileDetail(String name, String path, long size, long id, long clientId) {
+    public FileDetail(String name, String path, long size, long clientId, long id) {
         this.id = id;
         this.name = name;
         this.path = path;

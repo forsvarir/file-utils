@@ -45,7 +45,7 @@ class FileDetailServiceTest {
     void addFile_savesNewInformation() {
         final long expectedSize = 99L;
         final long expectedClientId = 77L;
-        FileDetail fileDetail = new FileDetail("Name", "Path", expectedSize, 0, expectedClientId);
+        FileDetail fileDetail = new FileDetail("Name", "Path", expectedSize, expectedClientId, 0);
         ArgumentCaptor<FileInformation> fileInformationCaptor = ArgumentCaptor.forClass(FileInformation.class);
 
         when(repository.save(any())).thenReturn(new FileInformation());
