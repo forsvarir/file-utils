@@ -28,7 +28,8 @@ class FileDetailServiceTest {
     void addFile_returnsSavedInstance() {
         final long expectedId = 55L;
         final long expectedSize = 99L;
-        FileInformation savedDatabaseInstance = new FileInformation("Name", "Path", expectedSize, expectedId);
+        final long expectedClientId = 77777L;
+        FileInformation savedDatabaseInstance = new FileInformation("Name", "Path", expectedSize, expectedClientId, expectedId);
         when(repository.save(any())).thenReturn(savedDatabaseInstance);
 
         var returnedFileInformation = service.addFile(new FileDetail());
@@ -37,12 +38,14 @@ class FileDetailServiceTest {
         assertThat(returnedFileInformation.getPath()).isEqualTo("Path");
         assertThat(returnedFileInformation.getName()).isEqualTo("Name");
         assertThat(returnedFileInformation.getSize()).isEqualTo(expectedSize);
+        assertThat(returnedFileInformation.getClientId()).isEqualTo(expectedClientId);
     }
 
     @Test
     void addFile_savesNewInformation() {
         final long expectedSize = 99L;
-        FileDetail fileDetail = new FileDetail("Name", "Path", expectedSize);
+        final long expectedClientId = 77L;
+        FileDetail fileDetail = new FileDetail("Name", "Path", expectedSize, 0, expectedClientId);
         ArgumentCaptor<FileInformation> fileInformationCaptor = ArgumentCaptor.forClass(FileInformation.class);
 
         when(repository.save(any())).thenReturn(new FileInformation());
@@ -57,5 +60,6 @@ class FileDetailServiceTest {
         assertThat(capturedInformation.getPath()).isEqualTo("Path");
         assertThat(capturedInformation.getName()).isEqualTo("Name");
         assertThat(capturedInformation.getSize()).isEqualTo(expectedSize);
+        assertThat(capturedInformation.getClientId()).isEqualTo(expectedClientId);
     }
 }
