@@ -40,6 +40,6 @@ public class FileDetailsUploader {
     public void processFolder(String pathToProcess) {
         var batchInformation = batchService.createNewRun();
         fileWalker.apply(Path.of(pathToProcess))
-                .forEach(f -> fileService.createFile(batchInformation.getId(), fileInformationService.toFileDetails(f)));
+                .forEach(f -> fileService.createFile(batchInformation.getId(), fileInformationService.toFileDetails(f, batchInformation.getId())));
     }
 }

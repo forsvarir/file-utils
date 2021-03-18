@@ -73,7 +73,22 @@ class FileDetailUploaderTest {
         ));
         uploader.processFolder("someFolder");
 
-        verify(fileInformationService).toFileDetails(Path.of("File1"));
+        verify(fileInformationService).toFileDetails(eq(Path.of("File1")), anyLong());
+    }
+
+    @Test
+    void processFolder_newRun_getsFileDetailsFromEachPathWithBatchId() {
+        BatchDetail newBatchDetail = createBatchInformation(55L);
+        when(batchService.createNewRun()).thenReturn(newBatchDetail);
+
+        when(fileWalker.apply(any())).thenReturn(Stream.of(
+                Path.of("File1"),
+                Path.of("File2"),
+                Path.of("File3")
+        ));
+        uploader.processFolder("someFolder");
+
+        verify(fileInformationService, times(3)).toFileDetails(any(), eq(55L));
     }
 
     @Test
@@ -86,7 +101,7 @@ class FileDetailUploaderTest {
                 Path.of("aFile"),
                 Path.of("aFile")
         ));
-        when(fileInformationService.toFileDetails(any()))
+        when(fileInformationService.toFileDetails(any(), anyLong()))
                 .thenReturn(fileDetail1)
                 .thenReturn(fileDetail2)
                 .thenReturn(fileDetail3);

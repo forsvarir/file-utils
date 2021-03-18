@@ -18,12 +18,22 @@ class FileInformationServiceTest {
     FileInformationService fileInformationService = new FileInformationService();
 
     @Test
+    void toFileDetails_populatesClientId() throws IOException {
+        var filePath = asPath("./someFile.txt");
+        Files.createFile(filePath);
+
+        var fileDetails = fileInformationService.toFileDetails(filePath, 99L);
+
+        assertThat(fileDetails.getClientId()).isEqualTo(99L);
+    }
+
+    @Test
     void toFileDetails_populatesFileName() throws IOException {
         var filePath = asPath("/someFolder/someFile.txt");
         Files.createDirectory(asPath("/someFolder"));
         Files.createFile(filePath);
 
-        var fileDetails = fileInformationService.toFileDetails(filePath);
+        var fileDetails = fileInformationService.toFileDetails(filePath, 0L);
 
         assertThat(fileDetails.getName()).isEqualTo("someFile.txt");
     }
@@ -34,7 +44,7 @@ class FileInformationServiceTest {
         Files.createDirectory(asPath("/someFolder"));
         Files.createFile(filePath);
 
-        var fileDetails = fileInformationService.toFileDetails(filePath);
+        var fileDetails = fileInformationService.toFileDetails(filePath, 0L);
 
         assertThat(fileDetails.getPath()).isEqualTo("/someFolder");
     }
@@ -46,7 +56,7 @@ class FileInformationServiceTest {
         Files.createFile(filePath);
         Files.write(filePath, new byte[]{0x1, 0x2, 0x3, 0x4, 0x5});
 
-        var fileDetails = fileInformationService.toFileDetails(filePath);
+        var fileDetails = fileInformationService.toFileDetails(filePath, 0L);
 
         assertThat(fileDetails.getSize()).isEqualTo(5);
     }

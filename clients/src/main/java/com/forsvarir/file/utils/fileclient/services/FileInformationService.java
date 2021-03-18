@@ -9,10 +9,10 @@ import java.nio.file.Path;
 
 @Service
 public class FileInformationService {
-    public FileDetail toFileDetails(Path filePath) {
+    public FileDetail toFileDetails(Path filePath, long batchId) {
         return new FileDetail(filePath.getFileName().toString(),
                 filePath.getParent().toString(),
-                getSize(filePath));
+                getSize(filePath), batchId, 0);
     }
 
     private long getSize(Path filePath) {
