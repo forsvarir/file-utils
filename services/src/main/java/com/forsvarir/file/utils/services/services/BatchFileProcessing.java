@@ -13,9 +13,6 @@ public class BatchFileProcessing {
     BatchService batchService;
 
     public FileDetail addFileToBatch(FileDetail fileToAdd, long batchId) {
-        var addedFile = fileDetailService.addFile(fileToAdd);
-        batchService.addItem(batchId, "File", addedFile.getId());
-
-        return addedFile;
+        return fileDetailService.addFile(new FileDetail(fileToAdd.getName(), fileToAdd.getPath(), fileToAdd.getSize(), fileToAdd.getId(), batchId));
     }
 }

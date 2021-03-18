@@ -34,7 +34,7 @@ class BatchFileProcessingTest {
     void addFileToBatch_savesFile() {
         FileDetail fileToAdd = new FileDetail("aFile", "aPath", 55L, 77L);
 
-        service.addFileToBatch(fileToAdd, 0L);
+        service.addFileToBatch(fileToAdd, 999L);
 
         ArgumentCaptor<FileDetail> fileDetailCaptor = ArgumentCaptor.forClass(FileDetail.class);
         verify(fileDetailService).addFile(fileDetailCaptor.capture());
@@ -46,21 +46,12 @@ class BatchFileProcessingTest {
         assertThat(capturedInformation.getPath()).isEqualTo("aPath");
         assertThat(capturedInformation.getName()).isEqualTo("aFile");
         assertThat(capturedInformation.getSize()).isEqualTo(55L);
-    }
-
-    @Test
-    void addFileToBatch_savesFileDetailsToBatch() {
-        FileDetail savedFileInformation = new FileDetail("aFile", "aPath", 55L, 77L);
-        when(fileDetailService.addFile(any())).thenReturn(savedFileInformation);
-
-        service.addFileToBatch(new FileDetail(), 999L);
-
-        verify(batchService).addItem(999L, "File", 77L);
+        assertThat(capturedInformation.getClientId()).isEqualTo(999L);
     }
 
     @Test
     void addFileToBatch_returnsSavedFileDetails() {
-        FileDetail expectedFileDetail = new FileDetail("aFile", "aPath", 55L, 77L);
+        FileDetail expectedFileDetail = new FileDetail("aFile", "aPath", 55L, 77L, 99L);
 
         when(fileDetailService.addFile(any())).thenReturn(expectedFileDetail);
 
@@ -70,5 +61,6 @@ class BatchFileProcessingTest {
         assertThat(savedBatch.getPath()).isEqualTo("aPath");
         assertThat(savedBatch.getName()).isEqualTo("aFile");
         assertThat(savedBatch.getSize()).isEqualTo(55L);
+        assertThat(savedBatch.getClientId()).isEqualTo(99L);
     }
 }
