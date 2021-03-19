@@ -15,9 +15,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static com.forsvarir.file.utils.services.web.FileControllerTest.asJsonString;
+import static com.forsvarir.file.utils.services.web.FileControllerIT.asJsonString;
 
-class BatchControllerTest {
+class BatchControllerIT {
     @Autowired
     private MockMvc mockMvc;
     private BatchService batchService;
